@@ -17,9 +17,9 @@ const getData = async () => {
 
 const result = await getData();
 console.log(result);
-
+const uuid = crypto.randomUUID();
 // Define the file path and data to write
-const filePath = 'example.txt';
+const filePath = `example-${uuid}.txt`;
 const data = JSON.stringify(result);
 
 // Asynchronous write using fs.writeFile
