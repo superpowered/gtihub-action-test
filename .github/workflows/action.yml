@@ -28,3 +28,5 @@ jobs:
 
       - name: Test2
         run: ls -la
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
