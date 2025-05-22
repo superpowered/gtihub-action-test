@@ -7,7 +7,7 @@ function getRandomInt(min, max) {
 }
 
 const getData = async () => {
-  const number = getRandomInt(1, 9999999);
+  const number = getRandomInt(1, 100);
   const url = "https://jsonplaceholder.typicode.com/posts/" + number;
   try {
     const response = await fetch(url);
@@ -24,7 +24,6 @@ const getData = async () => {
 
 const writeDefaultData = async () => {
   const result = await getData();
-  console.log(result);
   const uuid = crypto.randomUUID();
   // Define the file path and data to write
   const filePath = `example-${uuid}.json`;
