@@ -1,10 +1,10 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: "Hello World"
+description: "Greet someone and record the time"
 
 on:
   workflow_dispatch:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   build:
@@ -14,19 +14,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Nodejs
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
-      - name: Test1
+      - name: Show files before
         run: ls -la
-          
-      - name: Build Site
+
+      - name: Create File
         run: node index.js
 
-      - name: Test2
+      - name: Show files after
         run: ls -la
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Format file
+        run: npx prettier . --write
+
+      - name: Commit file
+        uses: stefanzweifel/git-auto-commit-action@v5

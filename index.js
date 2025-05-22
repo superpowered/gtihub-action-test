@@ -1,7 +1,14 @@
-import fs from 'fs';
+import fs from "fs";
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const getData = async () => {
-  const url = "https://jsonplaceholder.typicode.com/posts/1";
+  const number = getRandomInt(1, 9999999);
+  const url = "https://jsonplaceholder.typicode.com/posts/" + number;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -13,28 +20,24 @@ const getData = async () => {
     console.error(error.message);
     return undefined;
   }
-}
+};
 
-const result = await getData();
-console.log(result);
-const uuid = crypto.randomUUID();
-// Define the file path and data to write
-const filePath = `example-${uuid}.txt`;
-const data = JSON.stringify(result);
+const writeDefaultData = async () => {
+  const result = await getData();
+  console.log(result);
+  const uuid = crypto.randomUUID();
+  // Define the file path and data to write
+  const filePath = `example-${uuid}.json`;
+  const data = JSON.stringify(result);
 
-// Asynchronous write using fs.writeFile
-fs.writeFile(filePath, data, (err) => {
-  if (err) {
-    console.error('An error occurred:', err);
-  } else {
-    console.log('File written successfully!');
-  }
-});
+  // Asynchronous write using fs.writeFile
+  fs.writeFile(filePath, data, (err) => {
+    if (err) {
+      console.error("An error occurred:", err);
+    } else {
+      console.log("File written successfully!");
+    }
+  });
+};
 
-// Synchronous write using fs.writeFileSync
-try {
-  fs.writeFileSync(filePath, data);
-  console.log('File written successfully (synchronously)!');
-} catch (err) {
-  console.error('An error occurred (synchronously):', err);
-}
+await writeDefaultData();
