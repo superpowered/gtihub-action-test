@@ -36,6 +36,9 @@ jobs:
       - name: Format file
         run: npx prettier . --write
 
+      - name: Test 3
+        run: git diff --name-only -r HEAD^1 HEAD
+
       - name: Test diffs
         run: |
           changed_files=$(git diff --name-only -r HEAD^1 HEAD)
