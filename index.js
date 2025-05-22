@@ -24,7 +24,7 @@ const getData = async () => {
 
 const writeDefaultData = async () => {
   const result = await getData();
-  const filePath = `default-data.json`;
+  const filePath = `data/default-data.json`;
   const data = JSON.stringify(result);
   // Asynchronous write using fs.writeFile
   fs.writeFile(filePath, data, (err) => {
