@@ -53,13 +53,19 @@ jobs:
               echo "changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit file
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          file_pattern: 'data/default-data.json'
-
       - name: List changed files
         run: |
           for file in ${{ steps.changed-files.outputs.changed_files }}; do
             echo "$file was changed (imagine this is like a slack message or something)"
           done
+
+      - name: Commit file
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: 'data/default-data.json'
+
+      - name: Find diffs
+        run: git diff --name-only -r HEAD^1 HEAD
+
+      - name: Find diffs (2)
+        run: git diff --name-only -r HEAD
