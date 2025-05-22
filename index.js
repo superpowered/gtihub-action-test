@@ -7,7 +7,7 @@ function getRandomInt(min, max) {
 }
 
 const getData = async () => {
-  const number = getRandomInt(1, 100);
+  const number = getRandomInt(1, 3);
   const url = "https://jsonplaceholder.typicode.com/posts/" + number;
   try {
     const response = await fetch(url);
