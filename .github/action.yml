@@ -1,0 +1,24 @@
+name: 'Hello World'
+description: 'Greet someone and record the time'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Test1
+        run: ls -la
+          
+      - name: Build Site
+        run: node index.js
+
+      - name: Test2
+        run: ls -la
