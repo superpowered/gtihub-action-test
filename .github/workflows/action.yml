@@ -42,6 +42,7 @@ jobs:
       - name: Test diffs
         run: |
           changed_files=$(git diff --name-only -r HEAD^1 HEAD)
+          echo "i can echo, right?"
           for file in $changed_files; do
             for watched_file in "${watched_files[@]}"; do
               if [[ $file == *"$watched_file"* ]]; then
