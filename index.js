@@ -40,11 +40,9 @@ const getData = async (id) => {
 
 const writeDefaultData = async () => {
   const endpoints = await getEndpoints();
-  console.log(endpoints);
   const updatedData = endpoints.map(async (item) => await getData(item.id));
   const results = await Promise.all(updatedData);
   results.map((res) => {
-    console.log(res);
     const filePath = `data/default-data-${res.userId}.json`;
     const data = JSON.stringify(res);
     // Asynchronous write using fs.writeFile
