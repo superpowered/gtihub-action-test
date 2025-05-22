@@ -51,8 +51,7 @@ jobs:
           for file in $changed_files; do
             for watched_file in "${watched_files[@]}"; do
               if [[ $file == *"$watched_file"* ]]; then
-                # curl -X POST -H 'Content-type: application/json' --data '{"text":"File changed: '"$file"' "}' $SLACK_WEBHOOK_URL
-                echo '"File changed: '"$file"' "'
+                echo "File Changed"
               fi
             done
           done
