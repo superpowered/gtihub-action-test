@@ -1,5 +1,11 @@
 name: 'Hello World'
 description: 'Greet someone and record the time'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+
 jobs:
   build:
     runs-on: ubuntu-latest
