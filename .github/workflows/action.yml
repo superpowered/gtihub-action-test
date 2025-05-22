@@ -23,7 +23,9 @@ jobs:
           node-version: "20.x"
 
       - name: Show files before
-        run: ls -la
+        run: |
+          ls -la
+          ls data -la
 
       - name: Create File
         run: node index.js
@@ -36,7 +38,7 @@ jobs:
       - name: Format file
         run: npx prettier . --write
 
-      - name: Test 3
+      - name: Find diffs
         run: git diff --name-only -r HEAD^1 HEAD
 
       - name: Get changed files
@@ -47,44 +49,14 @@ jobs:
           else
               echo "changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)" >> $GITHUB_OUTPUT
           fi
-      - name: List changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.changed_files }}; do
-              echo "$file was changed"
-          done
-
-      - name: Test diffs
-        run: |
-          changed_files=$(git diff --name-only -r HEAD^1 HEAD)
-          echo "i can echo, right?"
-          for file in $changed_files; do
-            for watched_file in "${watched_files[@]}"; do
-              if [[ $file == *"$watched_file"* ]]; then
-                echo "File Changed"
-              fi
-            done
-          done
 
       - name: Commit file
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'data/default-data.json'
 
-      - name: Warn on file changed
+      - name: List changed files
         run: |
-          # Define the list of filenames to watch for changes
-          watched_files=("data/default-data.json")
-        
-          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            changed_files=$(git diff --name-only -r HEAD^1 HEAD)
-          else
-            changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
-          fi
-
-          for file in $changed_files; do
-            for watched_file in "${watched_files[@]}"; do
-              if [[ $file == *"$watched_file"* ]]; then
-                echo "File Changed"
-              fi
-            done
+          for file in ${{ steps.changed-files.outputs.changed_files }}; do
+            echo "$file was changed (imagine this is like a slack message or something)"
           done
