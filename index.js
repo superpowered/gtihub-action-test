@@ -38,11 +38,36 @@ const getData = async (id) => {
   }
 };
 
+const validate = (res) => {
+  if (!res) {
+    console.error("Validation fail -- no object");
+    return false;
+  }
+  if (!res?.id || !res?.userId || !res?.title || !res?.body) {
+    console.error("Validation fail -- keys");
+    return false;
+  }
+  if (
+    Number.isNaN(res.id) ||
+    Number.isNaN(res.userId) ||
+    typeof res?.title !== "string" ||
+    typeof res?.body !== "string"
+  ) {
+    console.error("Validation fail, -- types");
+    return false;
+  }
+
+  return true;
+};
+
 const writeDefaultData = async () => {
   const endpoints = await getEndpoints();
   const updatedData = endpoints.map(async (item) => await getData(item.id));
   const results = await Promise.all(updatedData);
   results.map((res) => {
+    if (!validate(res)) {
+      return;
+    }
     const filePath = `data/default-data-${res.userId}.json`;
     const data = JSON.stringify(res);
     // Asynchronous write using fs.writeFile

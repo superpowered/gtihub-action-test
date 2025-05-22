@@ -1,5 +1,5 @@
-name: "Hello World"
-description: "Greet someone and record the time"
+name: "Cache JSON from endpoint"
+description: "Stores JSON from endpoint into local .json files"
 
 on:
   workflow_dispatch:
