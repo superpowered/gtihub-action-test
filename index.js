@@ -6,9 +6,25 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const getData = async () => {
-  const number = getRandomInt(1, 3);
-  const url = "https://jsonplaceholder.typicode.com/posts/" + number;
+const getEndpoints = async () => {
+  const url = "https://jsonplaceholder.typicode.com/posts";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const json = await response.json();
+    return [json[0], json[10], json[20]];
+  } catch (error) {
+    console.error(error.message);
+    return undefined;
+  }
+};
+
+const getData = async (id) => {
+  // 1/3 chance of differnt data
+  const hit = getRandomInt(id, id + 3);
+  const url = "https://jsonplaceholder.typicode.com/posts/" + hit;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -23,16 +39,22 @@ const getData = async () => {
 };
 
 const writeDefaultData = async () => {
-  const result = await getData();
-  const filePath = `data/default-data.json`;
-  const data = JSON.stringify(result);
-  // Asynchronous write using fs.writeFile
-  fs.writeFile(filePath, data, (err) => {
-    if (err) {
-      console.error("An error occurred:", err);
-    } else {
-      console.log("File written successfully!");
-    }
+  const endpoints = await getEndpoints();
+  console.log(endpoints);
+  const updatedData = endpoints.map(async (item) => await getData(item.id));
+  const results = await Promise.all(updatedData);
+  results.map((res) => {
+    console.log(res);
+    const filePath = `data/default-data-${res.userId}.json`;
+    const data = JSON.stringify(res);
+    // Asynchronous write using fs.writeFile
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
+        console.error("An error occurred:", filePath, err);
+      } else {
+        console.log("File written successfully!", filePath);
+      }
+    });
   });
 };
 
