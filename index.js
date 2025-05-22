@@ -24,11 +24,8 @@ const getData = async () => {
 
 const writeDefaultData = async () => {
   const result = await getData();
-  const uuid = crypto.randomUUID();
-  // Define the file path and data to write
-  const filePath = `example-${uuid}.json`;
+  const filePath = `default-data.json`;
   const data = JSON.stringify(result);
-
   // Asynchronous write using fs.writeFile
   fs.writeFile(filePath, data, (err) => {
     if (err) {
