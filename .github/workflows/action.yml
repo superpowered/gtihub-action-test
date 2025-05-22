@@ -34,3 +34,25 @@ jobs:
 
       - name: Commit file
         uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: 'data/default-data.json'
+
+      - name: Warn on file changed
+        run: |
+          # Define the list of filenames to watch for changes
+          watched_files=("data/default-data.json")
+        
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            changed_files=$(git diff --name-only -r HEAD^1 HEAD)
+          else
+            changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+          fi
+
+          for file in $changed_files; do
+            for watched_file in "${watched_files[@]}"; do
+              if [[ $file == *"$watched_file"* ]]; then
+                # curl -X POST -H 'Content-type: application/json' --data '{"text":"File changed: '"$file"' "}' $SLACK_WEBHOOK_URL
+                echo '"File changed: '"$file"' "'
+              fi
+            done
+          done
