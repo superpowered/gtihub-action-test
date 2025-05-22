@@ -27,7 +27,9 @@ jobs:
         run: node index.js
 
       - name: Show files after
-        run: ls -la
+        run: |
+          ls -la
+          ls data -la
 
       - name: Format file
         run: npx prettier . --write
