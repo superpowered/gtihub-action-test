@@ -62,10 +62,16 @@ const validate = (res) => {
 
 const writeDefaultData = async () => {
   const endpoints = await getEndpoints();
+  if(!Array.isArray(endpoints) || !endpoints.length) {
+    console.error('No endpoints!');
+    return;
+  }
+  
   const updatedData = endpoints.map(async (item) => await getData(item.id));
   const results = await Promise.all(updatedData);
   results.map((res) => {
     if (!validate(res)) {
+      console.error('File failed validation!');
       return;
     }
     const filePath = `data/default-data-${res.userId}.json`;
