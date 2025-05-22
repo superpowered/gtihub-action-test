@@ -32,6 +32,17 @@ jobs:
       - name: Format file
         run: npx prettier . --write
 
+      - name: Test diffs
+        run: |
+          changed_files=$(git diff --name-only -r HEAD^1 HEAD)
+          for file in $changed_files; do
+            for watched_file in "${watched_files[@]}"; do
+              if [[ $file == *"$watched_file"* ]]; then
+                echo "File Changed"
+              fi
+            done
+          done
+
       - name: Commit file
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
